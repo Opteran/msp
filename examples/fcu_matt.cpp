@@ -1,7 +1,7 @@
 #include <FlightController.hpp>
 #include <iostream>
 
-struct {
+typedef struct fcAsyncData_t{
 	msp::msg::ImuSI imuSI;
 	msp::msg::Attitude attitude;
 	msp::msg::Rc rc;
