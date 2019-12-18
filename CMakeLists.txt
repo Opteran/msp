@@ -73,7 +73,7 @@ if(BUILD_EXAMPLES)
     target_link_libraries(client_read_test mspclient )
 
     # custom test for async communication
-    add_executable(client_read_test examples/fcu_matt.cpp)
+    add_executable(fcu_matt examples/fcu_matt.cpp)
     target_link_libraries(client_read_test mspclient )
 
 endif()
