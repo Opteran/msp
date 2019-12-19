@@ -15,6 +15,8 @@ struct FcAsyncData{
 	, rc(fw_v)
 	{}
 
+	//@TODO msp::msg::ImuSI imuSI(rawImu, 512.0, 1.0/4.096, 0.92f/10.0f, 9.80665f);
+
 } fcAsyncData(msp::FirmwareVariant::BAFL);
 
 
@@ -41,10 +43,6 @@ struct Callbacks {
     }
 
     void onRawImu (const msp::msg::RawImu& rawImu) {
-    	//msp::msg::ImuSI convimu(rawImu, 512.0, 1.0/4.096, 0.92f/10.0f, 9.80665f);
-
-    	/* Convert raw IMU data to SI units, copy into global variable */
-    	//fcAsyncData.imuSI = convimu;
 	fcAsyncData.rawImu = rawImu;
     }
 

@@ -195,7 +195,7 @@ int FlightController::getProtocolVersion() const { return msp_version_; }
 std::string FlightController::getBoardName() const { return board_name_; }
 
 void FlightController::initBoxes() {
-    // get box names
+    /*// get box names
     msp::msg::BoxNames box_names(fw_variant_);
     if(!client_.sendMessage(box_names))
         throw std::runtime_error("Cannot get BoxNames!");
@@ -217,7 +217,7 @@ void FlightController::initBoxes() {
         else {
             box_name_ids_[box_names.box_names[ibox]] = box_ids.box_ids[ibox];
         }
-    }
+    }*/
 }
 
 bool FlightController::isStatusActive(const std::string &status_name) {
