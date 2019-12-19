@@ -45,6 +45,7 @@ struct Callbacks {
 
     	/* Convert raw IMU data to SI units, copy into global variable */
     	//fcAsyncData.imuSI = convimu;
+	fcAsyncData.rawImu = rawImu;
     }
 
     void onAttitude(const msp::msg::Attitude& attitude) {
@@ -54,12 +55,11 @@ struct Callbacks {
     void onRC(const msp::msg::Rc& rc) {
         fcAsyncData.rc = rc;
     }
-
 };
 
 int main(int argc, char *argv[]) {
     const std::string device =
-        (argc > 1) ? std::string(argv[1]) : "/dev/ttyUSB0";
+        (argc > 1) ? std::string(argv[1]) : "/dev/ttyAMA0";
     const size_t baudrate = (argc > 2) ? std::stoul(argv[2]) : 115200;
 
     Callbacks cbs;
@@ -71,6 +71,10 @@ int main(int argc, char *argv[]) {
     fcu.subscribe(&Callbacks::onAttitude, &cbs, 1);
     fcu.subscribe(&Callbacks::onRawImu, &cbs, 1);
     fcu.subscribe(&Callbacks::onRC, &cbs, 1);
+
+    while(1){
+	std::cout << fcAsyncData.rawImu << std::endl;
+    }
 
     // Ctrl+C to quit
     std::cin.get();
