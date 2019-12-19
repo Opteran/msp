@@ -72,7 +72,9 @@ int main(int argc, char *argv[]) {
 
     while(1){
 	std::cout << fcAsyncData.rc << std::endl;
-	fcu.setRc(1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, (std::vector<unsigned short>) 1000);
+
+	vector<int> rcToSet(18,1234);
+	fcu.setRc(rcToSet);
 	usleep(100000);
     }
 
