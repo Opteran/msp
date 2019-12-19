@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  add_compile_options(-Wall -Wextra -Wpedantic -Werror)
+  add_compile_options(-Wall -Wextra)
 elseif(MSVC)
   add_compile_options(/W4 /WX)
 endif()
@@ -74,7 +74,7 @@ if(BUILD_EXAMPLES)
 
     # custom test for async communication
     add_executable(fcu_matt examples/fcu_matt.cpp)
-    target_link_libraries(client_read_test mspclient )
+    target_link_libraries(fcu_matt msp_fcu )
 
 endif()
 

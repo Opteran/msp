@@ -1,11 +1,22 @@
 #include <FlightController.hpp>
 #include <iostream>
 
-typedef struct fcAsyncData_t{
-	msp::msg::ImuSI imuSI;
+const msp::FirmwareVariant fw_variant = msp::FirmwareVariant::BAFL; /* Betaflight */
+
+/* Buffer into which asynchronous data will be written */
+struct FcAsyncData{
+	msp::msg::RawImu rawImu;
 	msp::msg::Attitude attitude;
 	msp::msg::Rc rc;
-} fcAsyncData;
+	
+	FcAsyncData(msp::FirmwareVariant fw_v)
+	: rawImu(fw_v)
+	, attitude(fw_v)
+	, rc(fw_v)
+	{}
+
+} fcAsyncData(msp::FirmwareVariant::BAFL);
+
 
 struct MyIdent : public msp::Message {
     MyIdent(msp::FirmwareVariant v) : Message(v) {}
@@ -29,11 +40,11 @@ struct Callbacks {
         }
     }
 
-    void onImuRaw (const msp::msg::RawImu imuRaw) {
-    	msp::msg::ImuSI convimu(imuRaw, 512.0, 1.0/4.096, 0.92f/10.0f, 9.80665f);
+    void onRawImu (const msp::msg::RawImu& rawImu) {
+    	//msp::msg::ImuSI convimu(rawImu, 512.0, 1.0/4.096, 0.92f/10.0f, 9.80665f);
 
     	/* Convert raw IMU data to SI units, copy into global variable */
-    	fcAsyncData.imuSI = convimu;
+    	//fcAsyncData.imuSI = convimu;
     }
 
     void onAttitude(const msp::msg::Attitude& attitude) {
@@ -58,7 +69,7 @@ int main(int argc, char *argv[]) {
     // subscribe with custom type
     fcu.subscribe(&Callbacks::onIdent, &cbs, 1);
     fcu.subscribe(&Callbacks::onAttitude, &cbs, 1);
-    fcu.subscribe(&Callbacks::onImuRaw, &cbs, 1);
+    fcu.subscribe(&Callbacks::onRawImu, &cbs, 1);
     fcu.subscribe(&Callbacks::onRC, &cbs, 1);
 
     // Ctrl+C to quit
