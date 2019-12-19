@@ -66,12 +66,13 @@ int main(int argc, char *argv[]) {
 
     // subscribe with custom type
     fcu.subscribe(&Callbacks::onIdent, &cbs, 1);
-    fcu.subscribe(&Callbacks::onAttitude, &cbs, 1);
-    fcu.subscribe(&Callbacks::onRawImu, &cbs, 1);
-    fcu.subscribe(&Callbacks::onRC, &cbs, 1);
+    fcu.subscribe(&Callbacks::onAttitude, &cbs, 0.01);
+    fcu.subscribe(&Callbacks::onRawImu, &cbs, 0.01);
+    fcu.subscribe(&Callbacks::onRC, &cbs, 0.01);
 
     while(1){
 	std::cout << fcAsyncData.rawImu << std::endl;
+	usleep(100000);
     }
 
     // Ctrl+C to quit
