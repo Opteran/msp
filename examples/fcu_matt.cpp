@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
     fcu.subscribe(&Callbacks::onRC, &cbs, 0.01);
 
     while(1){
-	std::cout << fcAsyncData.rawImu << std::endl;
+	std::cout << fcAsyncData.rc << std::endl;
 	fcu.setRc(1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, (std::vector<unsigned short>) 1000);
 	usleep(100000);
     }
