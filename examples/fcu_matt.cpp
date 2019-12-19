@@ -70,12 +70,14 @@ int main(int argc, char *argv[]) {
     fcu.subscribe(&Callbacks::onRawImu, &cbs, 0.01);
     fcu.subscribe(&Callbacks::onRC, &cbs, 0.01);
 
+    std:cout << "Subscription complete" << std::endl;
+
     while(1){
 	std::cout << fcAsyncData.rc << std::endl;
 
 	std::vector<unsigned short> rcToSet(16,1234);
 	int res = fcu.setRc(rcToSet);
-	std::cout << res << std::endl;
+	//std::cout << res << std::endl;
 	usleep(100000);
     }
 
