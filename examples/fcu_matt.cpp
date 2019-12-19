@@ -73,8 +73,9 @@ int main(int argc, char *argv[]) {
     while(1){
 	std::cout << fcAsyncData.rc << std::endl;
 
-	vector<int> rcToSet(18,1234);
-	fcu.setRc(rcToSet);
+	std::vector<unsigned short> rcToSet(18,1234);
+	bool res = fcu.setRc(rcToSet);
+	std::cout << res << std::endl;
 	usleep(100000);
     }
 
