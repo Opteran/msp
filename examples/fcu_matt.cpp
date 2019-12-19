@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) {
     fcu.subscribe(&Callbacks::onRawImu, &cbs, 0.01);
     fcu.subscribe(&Callbacks::onRC, &cbs, 0.01);
 
-    std:cout << "Subscription complete" << std::endl;
+    std::cout << "Subscription complete" << std::endl;
 
     while(1){
 	std::cout << fcAsyncData.rc << std::endl;
