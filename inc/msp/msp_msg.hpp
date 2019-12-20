@@ -3703,7 +3703,7 @@ struct RcBeforeOverride : public Message {
     }
 
     virtual std::ostream& print(std::ostream& s) const override {
-        s << "#Rc channels (" << channels.size() << ") :" << std::endl;
+        s << "#Rc channels before MSP override (" << channels.size() << ") :" << std::endl;
         for(const uint16_t c : channels) {
             s << c << " ";
         }
