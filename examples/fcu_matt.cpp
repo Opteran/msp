@@ -8,11 +8,13 @@ struct FcAsyncData{
 	msp::msg::RawImu rawImu;
 	msp::msg::Attitude attitude;
 	msp::msg::Rc rc;
+	msp::msg::RcBeforeOverride rcBeforeOverride;
 	
 	FcAsyncData(msp::FirmwareVariant fw_v)
 	: rawImu(fw_v)
 	, attitude(fw_v)
 	, rc(fw_v)
+	, rcBeforeOverride(fw_v)
 	{}
 
 	//@TODO msp::msg::ImuSI imuSI(rawImu, 512.0, 1.0/4.096, 0.92f/10.0f, 9.80665f);
@@ -53,6 +55,9 @@ struct Callbacks {
     void onRC(const msp::msg::Rc& rc) {
         fcAsyncData.rc = rc;
     }
+    void onRCBeforeOverride(const msp::msg::RcBeforeOverride& rcBeforeOverride) {
+        fcAsyncData.rcBeforeOverride = rcBeforeOverride;
+    }
 };
 
 int main(int argc, char *argv[]) {
@@ -69,22 +74,22 @@ int main(int argc, char *argv[]) {
     fcu.subscribe(&Callbacks::onAttitude, &cbs, 0.01);
     fcu.subscribe(&Callbacks::onRawImu, &cbs, 0.01);
     fcu.subscribe(&Callbacks::onRC, &cbs, 0.01);
+    fcu.subscribe(&Callbacks::onRCBeforeOverride, &cbs, 0.01);
 
     std::cout << "Subscription complete" << std::endl;
 
     while(1){
 	for(int i=0; i<20; i++)
 	{
-		std::cout << fcAsyncData.rc << std::endl;
+		std::cout << fcAsyncData.rc << fcAsyncData.rcBeforeOverride << std::endl;
 
 		std::vector<unsigned short> rcToSet(16,1234);
-		int res = fcu.setRc(rcToSet);
-		std::cout << res << std::endl;
+		fcu.setRc(rcToSet);
 		usleep(100000);
 	}
 	for(int i=0; i<20; i++)
 	{
-		std::cout << fcAsyncData.rc << std::endl;
+		std::cout << fcAsyncData.rc << fcAsyncData.rcBeforeOverride << std::endl;
 
 		usleep(100000);
 	}

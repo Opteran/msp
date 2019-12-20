@@ -151,6 +151,7 @@ enum class ID : uint16_t {
     MSP_GPS_CONFIG                     = 132,  // out message
     MSP_COMPASS_CONFIG                 = 133,  // out message
     MSP_ESC_SENSOR_DATA                = 134,  // out message
+    MSP_RC_BEFORE_OVERRIDE             = 140,  // Opteran addition
     MSP_STATUS_EX                      = 150,
     MSP_SENSOR_STATUS                  = 151,  // only iNav
     MSP_UID                            = 160,
@@ -3679,6 +3680,35 @@ struct NavConfig : public Message, public GpsConf {
         rc &= data.unpack(checksum);
 
         return rc;
+    }
+};
+
+// MSP_RC_BEFORE_OVERRIDE: 140
+struct RcBeforeOverride : public Message {
+    RcBeforeOverride(FirmwareVariant v) : Message(v) {}
+
+    virtual ID id() const override { return ID::MSP_RC_BEFORE_OVERRIDE; }
+
+    std::vector<uint16_t> channels;
+
+    virtual bool decode(const ByteVector& data) override {
+        channels.clear();
+        bool rc = true;
+        while(rc) {
+            uint16_t rc_data;
+            rc &= data.unpack(rc_data);
+            if(rc) channels.push_back(rc_data);
+        }
+        return !channels.empty();
+    }
+
+    virtual std::ostream& print(std::ostream& s) const override {
+        s << "#Rc channels (" << channels.size() << ") :" << std::endl;
+        for(const uint16_t c : channels) {
+            s << c << " ";
+        }
+        s << " " << std::endl;
+        return s;
     }
 };
 
