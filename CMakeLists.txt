@@ -25,7 +25,7 @@ if(WIN32)
     include_directories(${ASIO_HEADER_PATH})
 endif()
 
-OPTION(BUILD_EXAMPLES "Build Library with examples" ON)
+OPTION(BUILD_EXAMPLES "Build Library with examples" OFF)
 OPTION(BUILD_TESTS "Build Library with tests" OFF)
 
 find_package(Threads)
@@ -34,6 +34,7 @@ set(MSP_SOURCE_DIR src)
 set(MSP_INCLUDE_DIR inc/msp)
 include_directories(${MSP_INCLUDE_DIR})
 
+set(INSTALL_LIB_DIR ${PROJECT_SOURCE_DIR}/lib)
 
 ################################################################################
 ### libraries
