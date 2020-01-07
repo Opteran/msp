@@ -3063,7 +3063,7 @@ struct Attitude : public Message {
     Value<int16_t> pitch;  // decidegree
     Value<int16_t> yaw;    // degree
 
-    virtual bool decode(const ByteVector& data) override {../..
+    virtual bool decode(const ByteVector& data) override {
         bool rc = true;
         rc &= data.unpack(roll);
         rc &= data.unpack(pitch);
