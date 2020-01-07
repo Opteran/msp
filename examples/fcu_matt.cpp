@@ -5,19 +5,25 @@ const msp::FirmwareVariant fw_variant = msp::FirmwareVariant::BAFL; /* Betafligh
 
 /* Buffer into which asynchronous data will be written */
 struct FcAsyncData{
-	msp::msg::RawImu rawImu;
-	msp::msg::Attitude attitude;
-	msp::msg::Rc rc;
-	msp::msg::RcBeforeOverride rcBeforeOverride;
-	
-	FcAsyncData(msp::FirmwareVariant fw_v)
-	: rawImu(fw_v)
-	, attitude(fw_v)
-	, rc(fw_v)
-	, rcBeforeOverride(fw_v)
-	{}
+    msp::msg::RawImu rawImu;
+    msp::msg::Attitude attitude;
+    msp::msg::Rc rc;
+    msp::msg::RcBeforeOverride rcBeforeOverride;
+    
+    FcAsyncData(msp::FirmwareVariant fw_v)
+        : rawImu(fw_v)
+        , attitude(fw_v)
+        , rc(fw_v)
+        , rcBeforeOverride(fw_v)
+        {}
 
-	//@TODO msp::msg::ImuSI imuSI(rawImu, 512.0, 1.0/4.096, 0.92f/10.0f, 9.80665f);
+    msp::msg::ImuSI imuSI(const float acc_1g,     // sensor value at 1g
+        const float gyro_unit,  // resolution in 1/(deg/s)
+        const float magn_gain,  // scale magnetic value to uT (micro Tesla)
+        const float si_unit_1g  // acceleration at 1g (in m/s^2))
+    ) {
+        return msp::msg::ImuSI(rawImu, acc_1g, gyro_unit, magn_gain, si_unit_1g);
+    }
 
 } fcAsyncData(msp::FirmwareVariant::BAFL);
 
