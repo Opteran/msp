@@ -3059,11 +3059,11 @@ struct Attitude : public Message {
 
     virtual ID id() const override { return ID::MSP_ATTITUDE; }
 
-    Value<int16_t> roll;   // degree
-    Value<int16_t> pitch;  // degree
+    Value<int16_t> roll;   // decidegree
+    Value<int16_t> pitch;  // decidegree
     Value<int16_t> yaw;    // degree
 
-    virtual bool decode(const ByteVector& data) override {
+    virtual bool decode(const ByteVector& data) override {../..
         bool rc = true;
         rc &= data.unpack(roll);
         rc &= data.unpack(pitch);
@@ -3073,8 +3073,8 @@ struct Attitude : public Message {
 
     virtual std::ostream& print(std::ostream& s) const override {
         s << "#Attitude:" << std::endl;
-        s << " Roll : " << roll << " deg" << std::endl;
-        s << " Pitch : " << pitch << " deg" << std::endl;
+        s << " Roll : " << roll << " decideg" << std::endl;
+        s << " Pitch : " << pitch << " decideg" << std::endl;
         s << " Heading: " << yaw << " deg" << std::endl;
         return s;
     }
