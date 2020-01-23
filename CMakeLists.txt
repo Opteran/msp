@@ -77,6 +77,11 @@ if(BUILD_EXAMPLES)
     add_executable(fcu_matt examples/fcu_matt.cpp)
     target_link_libraries(fcu_matt msp_fcu )
 
+    # client test for asynchronous throughput
+    add_executable(fcu_async_benchmark examples/fcu_async_benchmark.cpp)
+    target_link_libraries(fcu_async_benchmark msp_fcu )
+
+
 endif()
 
 ################################################################################
