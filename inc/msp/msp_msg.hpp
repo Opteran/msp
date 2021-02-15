@@ -152,6 +152,8 @@ enum class ID : uint16_t {
     MSP_COMPASS_CONFIG                 = 133,  // out message
     MSP_ESC_SENSOR_DATA                = 134,  // out message
     MSP_RC_BEFORE_OVERRIDE             = 140,  // Opteran addition
+    MSP_GET_ACC_BIAS                   = 141,  // Opteran addition
+    MSP_SET_ACC_BIAS                   = 142,  // Opteran addition
     MSP_STATUS_EX                      = 150,
     MSP_SENSOR_STATUS                  = 151,  // only iNav
     MSP_UID                            = 160,
@@ -3709,6 +3711,48 @@ struct RcBeforeOverride : public Message {
         }
         s << " " << std::endl;
         return s;
+    }
+};
+
+// MSP_GET_ACC_BIAS: 141
+struct AccBias : public Message {
+    AccBias(FirmwareVariant v) : Message(v) {}
+
+    virtual ID id() const override { return ID::MSP_GET_ACC_BIAS; }
+
+    std::array<Value<float>, 3> accBias;
+
+    virtual bool decode(const ByteVector& data) override {
+        bool rc = true;
+        for(auto& a : accBias) {
+            rc &= data.unpack(a);
+        }
+        return rc;
+    }
+
+    virtual std::ostream& print(std::ostream& s) const override {
+        s << "Accelerometer biases: " << accBias[0] << ", " << accBias[1] << ", "
+          << accBias[2] << std::endl;
+        return s;
+    }
+};
+
+// MSP_SET_ACC_BIAS: 142
+struct SetAccBias : public Message {
+    SetAccBias(FirmwareVariant v) : Message(v) {}
+
+    virtual ID id() const override { return ID::MSP_SET_ACC_BIAS; }
+
+    std::array<float,3> bias;
+
+    virtual ByteVectorUptr encode() const override {
+        ByteVectorUptr data = std::make_unique<ByteVector>();
+        bool rc             = true;
+        for(const auto c : bias) {
+            rc &= data->pack(c);
+        }
+        if(!rc) data.reset();
+        return data;
     }
 };
 

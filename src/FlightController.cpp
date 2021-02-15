@@ -267,6 +267,12 @@ bool FlightController::setRc(const std::vector<uint16_t> channels) {
     return client_.sendMessageNoWait(rc);
 }
 
+bool FlightController::setAccBias(const std::array<float,3> bias) {
+    msp::msg::setAccBias setAccBias(fw_variant_);
+    setAccBias.bias = bias;
+    return client_.sendMessageNoWait(setAccBias);
+}
+
 bool FlightController::setMotors(
     const std::array<uint16_t, msp::msg::N_MOTOR> &motor_values) {
     msp::msg::SetMotor motor(fw_variant_);
